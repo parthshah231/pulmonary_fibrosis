@@ -151,3 +151,40 @@ if __name__ == "__main__":
     #     ax[1].imshow(slices[5].pixel_array, cmap="gray")
     #     plt.show()
     #     break
+
+    # Regress FVC on weeks to get the slope
+    slope_per_patient = {}
+    patient_features = {}
+    patient_ids = []
+
+    for i, patient_id in tqdm(enumerate(train_df.Patient.unique())):
+        patient_data = train_df.loc[train_df.Patient == patient_id, :]
+
+        # Extract FVC and weeks data
+        y = patient_data.FVC.values
+        x = patient_data.Weeks.values
+
+        # x -> independent variable
+        # m -> slope / weights
+        m_x = np.vstack([x, np.ones(len(x))]).T
+
+        # Perform least squares linear regression to find the slope and intercept
+        # y = mx + b, where m is the slope and b is the intercept
+        # y = fvc_values, x = week_values
+        # fvc_values = m * week_values + b
+        slope, intercept = np.linalg.lstsq(m_x, y)[0]
+
+        slope_per_patient[patient_id] = slope
+        patient_features[patient_id] = get_features(patient_data)
+        patient_ids.append(patient_id)
+
+    # print("Mean slope:", np.mean(list(slope_per_patient.values())))
+    # print("Median slope:", np.median(list(slope_per_patient.values())))
+    # print("Std slope:", np.std(list(slope_per_patient.values())))
+
+    # fig, ax = plt.subplots(1, 1, figsize=(16, 6))
+    # sns.histplot(list(slope_per_patient.values()), ax=ax, kde=True)
+    # plt.show()
+    # The distribution is skewed to the left, meaning that most patients have a negative slope.
+    # This means that most patients have a decreasing FVC over time. The std is also quite large,
+    # meaning that there is a lot of variation in the rates of change of FVC across patients.
