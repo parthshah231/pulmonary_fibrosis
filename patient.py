@@ -37,7 +37,12 @@ class Patient:
         left from the right."""
 
         slices: List[FileDataset] = [dcmread(dcm_file) for dcm_file in self.dcm_files]
-        slices.sort(key=lambda x: x.ImagePositionPatient[2])
+        try:
+            slices.sort(key=lambda x: x.ImagePositionPatient[2])
+        except Exception:
+            raise AttributeError(
+                f"Patient {self.patient_id} does not have ImagePositionPatient"
+            )
 
         if display:
             x, y = best_rect(len(slices))
@@ -50,15 +55,33 @@ class Patient:
 
         return slices
 
-    @property
-    def patient_info(self):
-        print("Patient Info:")
-        print("-------------")
-        print(f"Patient ID\t\t\t: {self.patient_id}")
-        print(f"Patient Name\t\t\t: {self.scan_details[0].PatientName}")
-        # print(f"Patient Age: {self.scan_details[0].PatientAge}")
-        print(f"Patient Sex\t\t\t: {self.scan_details[0].PatientSex}")
-        print(f"Patient Modality\t\t: {self.scan_details[0].Modality}")
-        print(f"Patient Body Part Examined\t: {self.scan_details[0].BodyPartExamined}")
-        print(f"Study Instance UID\t\t: {self.scan_details[0].StudyInstanceUID}")
-        print(f"Data exists\t\t\t: {True if self.scan_details[0].PixelData else False}")
+    def __str__(self) -> str:
+        info_string = """
+        Patient Info:
+        -------------
+        Patient ID                  : {0}
+        Patient Name                : {1}
+        Patient Sex                 : {2}
+        Patient Modality            : {3}
+        Patient Body Part Examined  : {4}
+        Study Instance UID          : {5}
+        Data exists                 : {6}
+        """
+
+        patient_id = self.patient_id
+        patient_name = self.scan_details[0].PatientName
+        patient_sex = self.scan_details[0].PatientSex
+        patient_modality = self.scan_details[0].Modality
+        body_part_examined = self.scan_details[0].BodyPartExamined
+        study_instance_uid = self.scan_details[0].StudyInstanceUID
+        data_exists = True if self.scan_details[0].PixelData else False
+
+        return info_string.format(
+            patient_id,
+            patient_name,
+            patient_sex,
+            patient_modality,
+            body_part_examined,
+            study_instance_uid,
+            data_exists,
+        )
