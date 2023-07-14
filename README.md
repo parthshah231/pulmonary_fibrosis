@@ -1,6 +1,5 @@
 ## Pulmoary Fibrosis
-- Pulmonary Fibrosis is a disorder with no known cause and no known cure, created by scarring of the lungs.
-- Outcomes of it can range from long-term stability to rapid deterioration.
+- Pulmonary Fibrosis is a disorder with no known cause and no known cure, created by scarring of the lungs. Outcomes of this disease can range from long-term stability to rapid deterioration.
 - Current methods make fibrotic lung diseases difficult to treat, even with access to a chest CT scan. In addition, the wide range of varied prognoses create issues organizing clinical trials. Finally, patients suffer extreme anxiety—in addition to fibrosis-related symptoms—from the disease’s opaque path of progression. 
 
 ## Project Goal
@@ -11,9 +10,9 @@
 each person—with its inherent uncertainties—and to couple these models together in a hierarchy so that information can be borrowed from other similar people. We call this the personalisation of models, and it is naturally implemented using hierarchical Bayesian approaches. - Ghahramani (2015)
 
 ## First look
-![CT Scan](https://github.com/parthshah231/pulmonary_fibrosis/blob/master/README/test3.gif)
+![CT Scan](https://github.com/parthshah231/pulmonary_fibrosis/blob/master/README/ct_scan.png)
 
-- The gif above showcases a CT scan, captured while the patient is either breathing in or holding their breath.
+- The above plot showcases a CT scan, captured while the patient is either breathing in or holding their breath.
 - The patient is lying on their back (in a supine position). Each image represents a different cross-section (axial) of the thorax (the area between the neck and belly)
 
 ## Bayesian Modeling
