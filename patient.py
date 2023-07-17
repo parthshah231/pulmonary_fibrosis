@@ -45,6 +45,9 @@ class Patient:
             )
 
         if display:
+            if len(slices) > 36:
+                print("Too many slices to display")
+                return slices
             x, y = best_rect(len(slices))
             fig, axes = plt.subplots(nrows=x, ncols=y, figsize=(20, 10))
             axes = axes.flatten()
